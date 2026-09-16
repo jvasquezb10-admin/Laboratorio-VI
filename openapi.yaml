@@ -1,0 +1,142 @@
+openapi: 3.0.3
+
+info:
+  title: API Biblioteca
+  description: API para administrar los libros de una biblioteca
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080
+    description: Servidor local
+
+paths:
+  /api/libros:
+    get:
+      summary: Consultar todos los libros
+      responses:
+        '200':
+          description: Lista de libros obtenida correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Libro'
+
+    post:
+      summary: Registrar un nuevo libro
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LibroRequest'
+      responses:
+        '201':
+          description: Libro registrado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Libro'
+        '400':
+          description: Datos inválidos para registrar el libro
+  
+  /api/libros/titulo/{titulo}:
+    get:
+      summary: Consultar libro por titulo
+      parameters:
+        - name: titulo
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Libro encontrado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Libro'
+        '404':
+          description: Libro no encontrado
+  
+  /api/libros/{id}:
+    put:
+      summary: Actualizar un libro
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LibroRequest'
+      responses:
+        '200':
+          description: Libro actualizado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Libro'
+        '400':
+          description: Datos inválidos para actualizar el libro
+        '404':
+          description: Libro no encontrado
+
+    delete:
+      summary: Eliminar un libro
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Libro eliminado correctamente
+        '404':
+          description: Libro no encontrado
+
+components:
+  schemas:
+    LibroRequest:
+      type: object
+      required:
+        - titulo
+        - autor
+        - isbn
+        - anioPublicacion
+        - estado
+      properties:
+        titulo:
+          type: string
+        autor:
+          type: string
+        isbn:
+          type: string
+        anioPublicacion:
+          type: integer
+        estado:
+          type: string
+    Libro:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        titulo:
+          type: string
+        autor:
+          type: string
+        isbn:
+          type: string
+        anioPublicacion:
+          type: integer
+        estado:
+          type: string
