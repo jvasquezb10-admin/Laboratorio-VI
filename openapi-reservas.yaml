@@ -24,22 +24,23 @@ paths:
                   $ref: '#/components/schemas/Reserva'
 
     post:
-        summary: Crear una nueva reserva
-        requestBody:
-          required: true
+      summary: Crear una nueva reserva
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReservaRequest'
+      responses:
+        '201':
+          description: Reserva creada correctamente
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ReservaRequest'
-        responses:
-          '201':
-            description: Reserva creada correctamente
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Reserva'
-          '400':
-            description: Datos inválidos para crear la reserva
+                $ref: '#/components/schemas/Reserva'
+        '400':
+          description: Datos inválidos para crear la reserva
+
   /api/reservas/{id}:
     get:
       summary: Consultar reserva por id
